@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, Image, StyleSheet } from 'react-native';
 import axios from 'axios';
 
-const API_URL = 'https://randomfox.ca/floof/'; // API de exemplo com imagens de raposas
+const API_URL = 'https://randomfox.ca/floof/'; 
 
 const FoxImageAPIApp = () => {
   const [raposa, setRaposa] = useState(null);

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, TextInput, Button, Text } from 'react-native'; 
+import { View, TextInput, Button, Text, Surface } from 'react-native'; 
 import { auth } from '../config/firebase'; 
 import { signInWithEmailAndPassword } from 'firebase/auth'; 
+import { Image } from "react-native";
 
 export default function LoginScreen({ navigation }) {
      const [email, setEmail] = useState(''); 
@@ -16,6 +17,11 @@ export default function LoginScreen({ navigation }) {
      }; 
 return (
      <View> 
+        
+    <Image
+     source={require("../../assets/fox.png")}
+     style={{ width: 550, height: 300 }}
+   />
         <TextInput placeholder="Email" value={email} 
         onChangeText={setEmail} /> 
         <TextInput placeholder="Password" value={password} 
@@ -23,7 +29,7 @@ return (
 
         <Button title="Login" onPress={handleLogin} /> 
         {error ? <Text>{error}</Text> : null}
-
+         <Text>.</Text>
         <Button title="Cadastro" onPress={() => navigation.navigate("RegisterScreen")} /> 
         
 
