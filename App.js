@@ -1,21 +1,60 @@
-import { Provider } from "react-native-paper";
-import { themeDark, themeLight } from "./src/config/theme";
-import { useColorScheme } from "react-native";
-import AppNavigator from "./src/navigation/AppNavigator";
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, Button } from 'react-native';
+import * as Location from 'expo-location';
 
 export default function App() {
+  const [location, setLocation] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
 
-  const colorScheme = useColorScheme();
-  
-  const isDarkMode = colorScheme === "dark";
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permissão de acesso à localização negada');
+        return;
+      }
 
+      let location = await Location.getCurrentPositionAsync({});
+      setLocation(location);
+    })();
+  }, []);
 
-  const theme = isDarkMode ? themeDark : themeLight;
+  const getLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+      setErrorMsg('Permissão de acesso à localização negada');
+      return;
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    setLocation(location);
+  };
+
+  let text = 'Aguardando...';
+  if (errorMsg) {
+    text = errorMsg;
+  } else if (location) {
+    text = `Latitude: ${location.coords.latitude}, Longitude: ${location.coords.longitude}`;
+  }
 
   return (
-    <Provider theme={theme}>
-      {/* aqui usamos o provider do RNP */}
-      <AppNavigator />
-    </Provider>
+    <View style={styles.container}>
+      <Text style={styles.paragraph}>{text}</Text>
+      <Button title="Obter Localização" onPress={getLocation} />
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  paragraph: {
+    fontSize: 18,
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+});
