@@ -4,6 +4,7 @@ import { createMaterialBottomTabNavigator } from "@react-navigation/material-bot
 import LoginScreen from '../screens/LoginScreen'; 
 import NewsScreen from '../screens/NewsScreen';
 import RegisterScreen from '../screens/RegisterScreen'; 
+import LocalScreen from '../screens/LocalScreen';
 
 
 const Stack = createStackNavigator(); 
@@ -26,6 +27,14 @@ export default function AppNavigator() {
           component={RegisterScreen}
           options={{
             title: "Cadastro",
+          }}
+        />
+
+      <Stack.Screen
+          name="LocalScreen"
+          component={LocalScreen}
+          options={{
+            title: "Localização",
           }}
         />
       

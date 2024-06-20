@@ -31,6 +31,8 @@ return (
         {error ? <Text>{error}</Text> : null}
          <Text>.</Text>
         <Button title="Cadastro" onPress={() => navigation.navigate("RegisterScreen")} /> 
+        <Text>.</Text>
+        <Button title="Localização" onPress={() => navigation.navigate("LocalScreen")} /> 
         
 
         

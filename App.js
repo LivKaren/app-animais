@@ -1,60 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
-import * as Location from 'expo-location';
+import { MD3LightTheme, Provider } from "react-native-paper";
+import AppNavigator from "./src/navigation/AppNavigator";
+
+// note que criamos o arquivo src/config/theme.js
+import { themeDark, themeLight } from "./src/config/theme";
+import { useColorScheme } from "react-native";
 
 export default function App() {
-  const [location, setLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
-
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permissão de acesso à localização negada');
-        return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-    })();
-  }, []);
-
-  const getLocation = async () => {
-    let { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
-      setErrorMsg('Permissão de acesso à localização negada');
-      return;
-    }
-
-    let location = await Location.getCurrentPositionAsync({});
-    setLocation(location);
-  };
-
-  let text = 'Aguardando...';
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (location) {
-    text = `Latitude: ${location.coords.latitude}, Longitude: ${location.coords.longitude}`;
-  }
+  // pega o tema do dispositivo
+  const colorScheme = useColorScheme();
+  // criação de tema
+  // https://callstack.github.io/react-native-paper/docs/guides/theming/#creating-dynamic-theme-colors
+  const isDarkMode = colorScheme === "dark";
+  
+  // let theme;
+  // if (isDarkMode) {
+  //   theme = themeDark;
+  // } else {
+  //   theme = themeLight;
+  // }
+  
+  // operador ternário
+  const theme = isDarkMode ? themeDark : themeLight;
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.paragraph}>{text}</Text>
-      <Button title="Obter Localização" onPress={getLocation} />
-    </View>
+    <Provider theme={theme}>
+      {/* aqui usamos o provider do RNP */}
+      <AppNavigator />
+    </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingHorizontal: 20,
-  },
-  paragraph: {
-    fontSize: 18,
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-});
